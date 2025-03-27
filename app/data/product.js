@@ -1,0 +1,8 @@
+export const products = [
+    { id: '1', name: 'Tomato', quantity: '20 kg', price: '₹30/kg', color: '#E74C3C', image: require('../../assets/images/products/tomato.jpg') },
+    { id: '2', name: 'Eggplant', quantity: '30 kg', price: '₹45/kg', color: '#8E44AD', image: require('../../assets/images/products/eggPlant.jpg') },
+    { id: '3', name: 'Potato', quantity: '32 kg', price: '₹70/kg', color: '#F4D03F', image: require('../../assets/images/products/potato.jpg') },
+    { id: '4', name: 'Carrot', quantity: '25 kg', price: '₹55/kg', color: '#E67E22', image: require('../../assets/images/products/carrot.jpg') },
+    { id: '5', name: 'Onion', quantity: '40 kg', price: '₹70/kg', color: '#922B21', image: require('../../assets/images/products/onion.jpg') },
+    { id: '6', name: 'Cabbage', quantity: '22 kg', price: '₹35/kg', color: '#28B463', image: require('../../assets/images/products/cabbage.jpg') },
+  ];
