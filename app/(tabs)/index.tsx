@@ -18,6 +18,7 @@ import React from 'react';
 import InventoryScreen from '../components/inventory';
 import OrderTrackingScreen from '../components/orderDetails';
 import ProductUpdate from '../components/updateProduct';
+import ProductDetails from '../components/product_Details';
 
 
 export default function HomeScreen() {
@@ -27,7 +28,7 @@ export default function HomeScreen() {
   // <AddProduct/>
   // <LanguageSelection/>
   // <MenuScreen/>
-  <ProductsScreen/>
+  // <ProductsScreen/>
   // <SettingsScreen/>
   // <EditProfileScreen/>
   // <PendingOrdersScreen/>
@@ -36,6 +37,9 @@ export default function HomeScreen() {
   // <InventoryScreen/>
   // <OrderTrackingScreen/>
   // <ProductUpdate/>
+  <ProductDetails/>
+
+  
   );
 }
 
