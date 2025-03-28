@@ -18,7 +18,7 @@ import React from 'react';
 import InventoryScreen from '../components/inventory';
 import OrderTrackingScreen from '../components/orderDetails';
 import ProductUpdate from '../components/updateProduct';
-import ProductDetails from '../components/product_Details';
+import ProductDetails from '../components/productDetails';
 
 
 export default function HomeScreen() {

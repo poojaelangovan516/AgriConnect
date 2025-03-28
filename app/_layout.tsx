@@ -18,6 +18,7 @@ export default function Layout() {
       <Stack.Screen name="settings" options={{ title: "settings" }} />
       <Stack.Screen name="totalOrders" options={{ title: "totalOrders" }} />
       <Stack.Screen name="updateProducts" options={{ title: "updateProducts" }} />
+      <Stack.Screen name="productDetails" options={{ title: "productDetails" }} />
     </Stack>
   );
 }
