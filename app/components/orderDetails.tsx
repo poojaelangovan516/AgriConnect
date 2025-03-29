@@ -31,7 +31,7 @@ export default function OrderTrackingScreen() {
           <Text style={styles.label}>Price: <Text style={styles.value}>24/kg</Text></Text>
           <Text style={styles.totalPrice}>Total Price: 360</Text>
         </View>
-        <Image source={require('../../assets/images/products/tomato.jpg')} style={styles.productImage} />
+        <Image source={require('../../assets/images/products/tomato.png')} style={styles.productImage} />
       </View>
 
       {/* Order Tracking */}

@@ -15,7 +15,7 @@ export const inventoryData = [
       id: '3',
       productName: 'Tomato',
       quantity: '10kg',
-      image: require('../../assets/images/products/tomato.jpg'),
+      image: require('../../assets/images/products/tomato.png'),
     },
     {
       id: '4',

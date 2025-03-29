@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import LoginScreen from '../components/login';
 import SignUpScreen from '../components/signup';
-import AddProduct from '../components/add_Product';
+import AddProduct from '../components/addProduct';
 import LanguageSelection from '../components/language';
 import MenuScreen from '../components/menu';
 import ProductsScreen from '../components/productList';
@@ -19,6 +19,8 @@ import InventoryScreen from '../components/inventory';
 import OrderTrackingScreen from '../components/orderDetails';
 import ProductUpdate from '../components/updateProduct';
 import ProductDetails from '../components/productDetails';
+import HomePage from '../components/homePage';
+import AnalyticsScreen from '../components/analytics';
 
 
 export default function HomeScreen() {
@@ -37,9 +39,9 @@ export default function HomeScreen() {
   // <InventoryScreen/>
   // <OrderTrackingScreen/>
   // <ProductUpdate/>
-  <ProductDetails/>
-
-  
+  // <ProductDetails/>
+    // <HomePage/>
+    <AnalyticsScreen/>
   );
 }
 

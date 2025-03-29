@@ -43,7 +43,6 @@ export default function ProductDetails() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8d7d5',
     padding: 20,
   },
   backButton: {
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   reviewText: {
-    fontSize: 14,
+    fontSize: 16,
   },
 });
 

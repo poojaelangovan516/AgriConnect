@@ -13,7 +13,7 @@ export default function ProductUpdate() {
               </TouchableOpacity>
               <Text style={styles.header}>Pending Orders</Text>
             </View>
-      <Image source={require('../../assets/images/products/tomato.jpg')} style={styles.image} />
+      <Image source={require('../../assets/images/products/tomato.png')} style={styles.image} />
       <Text style={styles.productName}>Tomato</Text>
       <Text style={styles.subHeader}>Update your product details!</Text>
       <TextInput style={styles.input} value="Tomato" />
