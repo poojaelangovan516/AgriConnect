@@ -7,7 +7,7 @@ import { menuItems } from './menufile';
 export default function MenuScreen() {
   const router = useRouter();
 
-  const handleNavigation = (route) => {
+  const handleNavigation = (route: any) => {
     router.push(route);
   };
 
@@ -16,8 +16,8 @@ export default function MenuScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
+                  <Ionicons name="arrow-back" size={24} color="white" />
+                </TouchableOpacity>
         <Text style={styles.headerText}>Menu</Text>
       </View>
 
