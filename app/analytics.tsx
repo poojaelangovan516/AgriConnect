@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { FontAwesome } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 
 export default function AnalyticsScreen() {
     const router = useRouter();
+    const [activeButton, setActiveButton] = useState("D");
 
     return (
         <ScrollView style={styles.container}>
@@ -16,19 +17,30 @@ export default function AnalyticsScreen() {
                 </TouchableOpacity>
                 <Text style={styles.title}>Analytics</Text>
             </View>
+
+            <View style={styles.toggleContainer}>
+      {["D", "W", "M"].map((label) => (
+        <TouchableOpacity
+          key={label}
+          style={[
+            styles.toggleButton,
+            activeButton === label && styles.toggleButtonActive, // Apply active style
+          ]}
+          onPress={() => setActiveButton(label)} // Update state on click
+        >
+          <Text style={activeButton === label ? styles.activeText : styles.inactiveText}>
+            {label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+            </View>
             
             {/* Progress Section */}
             <View style={styles.progressCard}>
                 <Text style={styles.progressText}>Your Daily Progress</Text>
                 <Text style={styles.progressValue}>75%</Text>
             </View>
-
-            {/* Toggle Buttons */}
-            <View style={styles.toggleContainer}>
-                <TouchableOpacity style={styles.toggleButtonActive}><Text>D</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.toggleButton}><Text>W</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.toggleButton}><Text>M</Text></TouchableOpacity>
-            </View>
+            
             
             {/* Bar Chart */}
             <BarChart
@@ -46,7 +58,7 @@ export default function AnalyticsScreen() {
                     backgroundGradientFrom: '#ffffff',
                     backgroundGradientTo: '#ffffff',
                     decimalPlaces: 0,
-                    color: () => '#005F99',
+                    color: () => '#1B5E20',
                     labelColor: () => 'black',
                     style: { borderRadius: 10 },
                     barPercentage: 0.6,
@@ -72,14 +84,33 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#fff', padding: 20 },
     header: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
     title: { fontSize: 20, fontWeight: 'bold', marginLeft: 10 },
-    progressCard: { backgroundColor: '#CFE7FF', padding: 20, borderRadius: 10, marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between' },
+    progressCard: { backgroundColor: '#C8E6C9', padding: 20, borderRadius: 10, marginBottom: 40, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between' },
     progressText: { fontSize: 16, fontWeight: 'bold' },
     progressValue: { fontSize: 18, fontWeight: 'bold' },
-    toggleContainer: { flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 },
-    toggleButton: { backgroundColor: '#EEE', padding: 10, borderRadius: 5, marginLeft: 5 },
-    toggleButtonActive: { backgroundColor: '#005F99', padding: 10, borderRadius: 5, marginLeft: 5, color: 'white' },
     chart: { borderRadius: 10, marginBottom: 20, alignSelf: 'center' },
     orderCard: { borderWidth: 1, borderColor: '#000', padding: 20, borderRadius: 10, alignItems: 'center' },
     orderTitle: { fontSize: 16, fontWeight: 'bold' },
     orderValue: { fontSize: 18, fontWeight: 'bold' },
+    toggleContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginVertical: 10,
+      },
+      toggleButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginHorizontal: 5,
+        borderRadius: 5,
+        backgroundColor: "#ddd", // Default background
+      },
+      toggleButtonActive: {
+        backgroundColor: "#1B5E20", // Active background color
+      },
+      activeText: {
+        color: "white",
+        fontWeight: "bold",
+      },
+      inactiveText: {
+        color: "black",
+      },
 });
