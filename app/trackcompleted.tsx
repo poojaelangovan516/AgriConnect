@@ -1,58 +1,60 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 const TrackOrderScreen = () => {
+  const { t } = useTranslation();
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Track Orders</Text>
-      
+      <Text style={styles.title}>{t('trackOrders')}</Text>
+
       <View style={styles.infoContainer}>
-        <Text style={styles.label}>Customer Name: <Text style={styles.value}>Arun</Text></Text>
-        <Text style={styles.label}>Order#: <Text style={styles.value}>824193</Text></Text>
-        <Text style={styles.label}>Address: <Text style={styles.value}>12A/1, Anna Nagar, Coimbatore</Text></Text>
+        <Text style={styles.label}>{t('customerName')}: <Text style={styles.value}>Arun</Text></Text>
+        <Text style={styles.label}>{t('orderNumber')}: <Text style={styles.value}>824193</Text></Text>
+        <Text style={styles.label}>{t('address')}: <Text style={styles.value}>12A/1, Anna Nagar, Coimbatore</Text></Text>
       </View>
-      
+
       <View style={styles.productContainer}>
         <View>
-          <Text style={styles.productTitle}>EggPlant</Text>
-          <Text style={styles.detailText}>Quantity: 10kg</Text>
-          <Text style={styles.detailText}>Price: 70/kg</Text>
-          <Text style={styles.totalPrice}>Total Price: 700</Text>
+          <Text style={styles.productTitle}>{t('eggplant')}</Text>
+          <Text style={styles.detailText}>{t('quantity')}: 10kg</Text>
+          <Text style={styles.detailText}>{t('price')}: 70/kg</Text>
+          <Text style={styles.totalPrice}>{t('totalPrice')}: 700</Text>
         </View>
 
         <Image source={require('../assets/images/eggPlant.jpg')} style={styles.productImage} />
-
       </View>
 
-      <Text style={styles.trackTitle}>Track</Text>
+      <Text style={styles.trackTitle}>{t('track')}</Text>
 
       <View style={styles.timeline}>
         <View style={styles.timelineItem}>
           <FontAwesome name="check-square-o" size={24} color="orange" />
-          <Text style={styles.timelineText}>Accept</Text>
+          <Text style={styles.timelineText}>{t('accept')}</Text>
           <Text style={styles.timeText}>05-Feb-2025, 10:03 AM</Text>
         </View>
         <View style={styles.timelineItem}>
           <MaterialIcons name="inventory" size={24} color="orange" />
-          <Text style={styles.timelineText}>Packed</Text>
+          <Text style={styles.timelineText}>{t('packed')}</Text>
           <Text style={styles.timeText}>07-Feb-2025, 11:16 AM</Text>
         </View>
         <View style={styles.timelineItem}>
           <MaterialIcons name="local-shipping" size={24} color="green" />
-          <Text style={styles.timelineText}>In-Transit</Text>
+          <Text style={styles.timelineText}>{t('inTransit')}</Text>
           <Text style={styles.timeText}>10-Feb-2025, 3:34 PM</Text>
         </View>
         <View style={styles.timelineItem}>
           <MaterialIcons name="check-circle" size={24} color="green" />
-          <Text style={styles.timelineText}>Delivered</Text>
+          <Text style={styles.timelineText}>{t('delivered')}</Text>
           <Text style={styles.timeText}>12-Feb-2025</Text>
         </View>
       </View>
 
-      <Text style={styles.trackTitle}>Payment Detail</Text>
-      <Text style={styles.paymentText}>Cash On Delivery</Text>
-      <Text style={styles.paymentReceived}>Payment received on 12-Feb-2025, 11:12 AM</Text>
+      <Text style={styles.trackTitle}>{t('paymentDetail')}</Text>
+      <Text style={styles.paymentText}>{t('cashOnDelivery')}</Text>
+      <Text style={styles.paymentReceived}>{t('paymentReceivedOn')} 12-Feb-2025, 11:12 AM</Text>
     </ScrollView>
   );
 };

@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { BarChart } from 'react-native-chart-kit';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function AnalyticsScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const [activeButton, setActiveButton] = useState("D");
 
     return (
@@ -15,33 +17,33 @@ export default function AnalyticsScreen() {
                 <TouchableOpacity onPress={() => router.back()}>
                     <FontAwesome name="arrow-left" size={24} color="black" />
                 </TouchableOpacity>
-                <Text style={styles.title}>Analytics</Text>
+                <Text style={styles.title}>{t('analytics.title')}</Text>
             </View>
 
+            {/* Toggle Buttons */}
             <View style={styles.toggleContainer}>
-      {["D", "W", "M"].map((label) => (
-        <TouchableOpacity
-          key={label}
-          style={[
-            styles.toggleButton,
-            activeButton === label && styles.toggleButtonActive, // Apply active style
-          ]}
-          onPress={() => setActiveButton(label)} // Update state on click
-        >
-          <Text style={activeButton === label ? styles.activeText : styles.inactiveText}>
-            {label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+                {["D", "W", "M"].map((label) => (
+                    <TouchableOpacity
+                        key={label}
+                        style={[
+                            styles.toggleButton,
+                            activeButton === label && styles.toggleButtonActive,
+                        ]}
+                        onPress={() => setActiveButton(label)}
+                    >
+                        <Text style={activeButton === label ? styles.activeText : styles.inactiveText}>
+                            {t(`analytics.toggle.${label}`)}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
             </View>
-            
+
             {/* Progress Section */}
             <View style={styles.progressCard}>
-                <Text style={styles.progressText}>Your Daily Progress</Text>
+                <Text style={styles.progressText}>{t('analytics.dailyProgress')}</Text>
                 <Text style={styles.progressValue}>75%</Text>
             </View>
-            
-            
+
             {/* Bar Chart */}
             <BarChart
                 data={{
@@ -52,7 +54,7 @@ export default function AnalyticsScreen() {
                 height={250}
                 fromZero={true}
                 yAxisLabel={''}
-                yAxisSuffix={'k'}
+                yAxisSuffix={t('analytics.yAxisSuffix')}
                 yLabelsOffset={50}
                 chartConfig={{
                     backgroundGradientFrom: '#ffffff',
@@ -73,7 +75,7 @@ export default function AnalyticsScreen() {
 
             {/* Total Orders */}
             <View style={styles.orderCard}>
-                <Text style={styles.orderTitle}>Total Orders</Text>
+                <Text style={styles.orderTitle}>{t('analytics.totalOrders')}</Text>
                 <Text style={styles.orderValue}>50</Text>
             </View>
         </ScrollView>
@@ -95,22 +97,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         marginVertical: 10,
-      },
-      toggleButton: {
+    },
+    toggleButton: {
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginHorizontal: 5,
         borderRadius: 5,
-        backgroundColor: "#ddd", // Default background
-      },
-      toggleButtonActive: {
-        backgroundColor: "#1B5E20", // Active background color
-      },
-      activeText: {
+        backgroundColor: "#ddd",
+    },
+    toggleButtonActive: {
+        backgroundColor: "#1B5E20",
+    },
+    activeText: {
         color: "white",
         fontWeight: "bold",
-      },
-      inactiveText: {
+    },
+    inactiveText: {
         color: "black",
-      },
+    },
 });

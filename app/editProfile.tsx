@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function EditProfileScreen() {
   const router = useRouter();
-  
+  const { t } = useTranslation(); // ✅ Add translation hook
+
   const [editableField, setEditableField] = useState(null);
   const [profile, setProfile] = useState({
     name: 'Sekar',
-    gender: 'Male',
+    gender: t('male'), // ✅ Translated gender
     email: 'xxxxx@gmail.com',
     phone: '........',
-    location: 'Coimbatore'
+    location: 'Coimbatore',
   });
 
   const handleEdit = (field) => {
@@ -22,13 +24,13 @@ export default function EditProfileScreen() {
   const handleChange = (field, value) => {
     setProfile((prevProfile) => ({
       ...prevProfile,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleDone = () => {
-    setEditableField(null); // Exit edit mode
-    console.log('Updated Profile:', profile); // Check updated values in console
+    setEditableField(null);
+    console.log('Updated Profile:', profile);
   };
 
   return (
@@ -38,7 +40,7 @@ export default function EditProfileScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Edit Profile</Text>
+        <Text style={styles.headerTitle}>{t('edit_profile')}</Text>
       </View>
 
       {/* Profile Image with Camera Icon */}
@@ -53,7 +55,7 @@ export default function EditProfileScreen() {
         {Object.keys(profile).map((field) => (
           <ProfileField
             key={field}
-            label={field.charAt(0).toUpperCase() + field.slice(1)}
+            label={t(field)} // ✅ Localized label
             value={profile[field]}
             editable={editableField === field}
             onEdit={() => handleEdit(field)}
@@ -64,7 +66,7 @@ export default function EditProfileScreen() {
 
       {/* Done Button */}
       <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
-        <Text style={styles.doneText}>Done</Text>
+        <Text style={styles.doneText}>{t('done')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -162,5 +164,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default EditProfileScreen;

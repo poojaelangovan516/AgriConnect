@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -12,20 +13,21 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [category, setCategory] = useState('');
+  const { t } = useTranslation(); // Initialize translation
 
   const handleSignUp = () => {
     if (!username || !email || !mobile || !password || !confirmPassword || !category) {
-      Alert.alert('Error', 'All fields are required!');
+      Alert.alert(t('error'), t('all_fields_required'));
       return;
     }
     
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match!');
+      Alert.alert(t('error'), t('passwords_do_not_match'));
       return;
     }
 
     if (category.toLowerCase() !== 'farmer') {
-      Alert.alert('Error', 'Category must be "farmer" to sign up.');
+      Alert.alert(t('error'), t('category_must_be_farmer'));
       return;
     }
 
@@ -41,23 +43,23 @@ export default function SignUpScreen() {
       </View>
       
       <Text style={styles.registerText}>
-        Register <Text style={{ color: 'green' }}>your account</Text>
+        {t('register')} <Text style={{ color: 'green' }}>{t('your_account')}</Text>
       </Text>
 
-      <TextInput style={styles.input} placeholder="Username" placeholderTextColor="#555" value={username} onChangeText={setUsername} />
-      <TextInput style={styles.input} placeholder="Email" placeholderTextColor="#555" keyboardType="email-address" value={email} onChangeText={setEmail} />
-      <TextInput style={styles.input} placeholder="Mobile Number" placeholderTextColor="#555" keyboardType="phone-pad" value={mobile} onChangeText={setMobile} />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry placeholderTextColor="#555" value={password} onChangeText={setPassword} />
-      <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry placeholderTextColor="#555" value={confirmPassword} onChangeText={setConfirmPassword} />
-      <TextInput style={styles.input} placeholder="Category (Farmer)" placeholderTextColor="#555" value={category} onChangeText={setCategory} />
+      <TextInput style={styles.input} placeholder={t('username')} placeholderTextColor="#555" value={username} onChangeText={setUsername} />
+      <TextInput style={styles.input} placeholder={t('email')} placeholderTextColor="#555" keyboardType="email-address" value={email} onChangeText={setEmail} />
+      <TextInput style={styles.input} placeholder={t('mobile_number')} placeholderTextColor="#555" keyboardType="phone-pad" value={mobile} onChangeText={setMobile} />
+      <TextInput style={styles.input} placeholder={t('password')} secureTextEntry placeholderTextColor="#555" value={password} onChangeText={setPassword} />
+      <TextInput style={styles.input} placeholder={t('confirm_password')} secureTextEntry placeholderTextColor="#555" value={confirmPassword} onChangeText={setConfirmPassword} />
+      <TextInput style={styles.input} placeholder={t('category_farmer')} placeholderTextColor="#555" value={category} onChangeText={setCategory} />
 
       <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-        <Text style={styles.signUpText}>Sign up</Text>
+        <Text style={styles.signUpText}>{t('sign_up')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push('./signin')}>
         <Text style={styles.signInText}>
-          Already have an account? <Text style={{ color: 'green' }}>Sign in</Text>
+          {t('already_have_account')} <Text style={{ color: 'green' }}>{t('sign_in')}</Text>
         </Text>
       </TouchableOpacity>
     </View>
@@ -124,4 +126,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-

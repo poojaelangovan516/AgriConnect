@@ -1,19 +1,28 @@
+import React, { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductUpdate() {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
 
-  // State to hold input values (Editable)
-  const [name, setName] = useState('Tomato');
-  const [category, setCategory] = useState('Vegetables');
-  const [quantity, setQuantity] = useState('20kg');
-  const [marketPrice, setMarketPrice] = useState('30');
-  const [yourPrice, setYourPrice] = useState('24');
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [marketPrice, setMarketPrice] = useState('');
+  const [yourPrice, setYourPrice] = useState('');
 
-  // Function to handle "Done" button
+  // Set initial state when language changes
+  useEffect(() => {
+    setName(t('productNameDefault', 'Tomato'));
+    setCategory(t('categoryDefault', 'Vegetables'));
+    setQuantity('20kg');
+    setMarketPrice('30');
+    setYourPrice('24');
+  }, [i18n.language]); // dependency on language change
+
   const handleDone = () => {
     router.push({
       pathname: '/productDetails',
@@ -22,7 +31,7 @@ export default function ProductUpdate() {
         category,
         quantity,
         marketPrice,
-        price: yourPrice, // yourPrice becomes price in ProductDetails
+        price: yourPrice,
       },
     });
   };
@@ -34,42 +43,57 @@ export default function ProductUpdate() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Update Product</Text>
+        <Text style={styles.header}>{t('updateProduct')}</Text>
       </View>
 
       {/* Product Image */}
       <Image source={require('../assets/images/tomato.png')} style={styles.image} />
       <Text style={styles.productName}>{name}</Text>
-      <Text style={styles.subHeader}>Update your product details!</Text>
+      <Text style={styles.subHeader}>{t('updateProductDetails')}</Text>
 
-      {/* Input Fields (Editable) */}
-      <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Product Name" />
-      <TextInput style={styles.input} value={category} onChangeText={setCategory} placeholder="Category" />
-      <TextInput style={styles.input} value={quantity} onChangeText={setQuantity} placeholder="Quantity (e.g. 20kg)" />
+      {/* Input Fields */}
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder={t('productName')}
+      />
+      <TextInput
+        style={styles.input}
+        value={category}
+        onChangeText={setCategory}
+        placeholder={t('category')}
+      />
+      <TextInput
+        style={styles.input}
+        value={quantity}
+        onChangeText={setQuantity}
+        placeholder={t('quantityExample')}
+      />
       <TextInput
         style={styles.input}
         value={marketPrice}
         onChangeText={setMarketPrice}
-        placeholder="Market Price (e.g. 30/kg)"
+        placeholder={t('marketPriceExample')}
         keyboardType="numeric"
       />
       <TextInput
         style={styles.input}
         value={yourPrice}
         onChangeText={setYourPrice}
-        placeholder="Your Price (e.g. 24/kg)"
+        placeholder={t('yourPriceExample')}
         keyboardType="numeric"
       />
 
       {/* Done Button */}
       <TouchableOpacity style={styles.button} onPress={handleDone}>
-        <Text style={styles.buttonText}>Done</Text>
+        <Text style={styles.buttonText}>{t('done')}</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-// Styles
+// styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,

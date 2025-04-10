@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 const CreateNewPasswordScreen = () => {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { t } = useTranslation(); // Initialize translation
 
   const handleSave = () => {
     if (!password || !confirmPassword) {
-      Alert.alert('Error', 'Please enter both password fields');
+      Alert.alert(t('error'), t('enter_both_passwords'));
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert(t('error'), t('passwords_do_not_match'));
       return;
     }
-    Alert.alert('Success', 'Password changed successfully');
+    Alert.alert(t('success'), t('password_changed_successfully'));
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backText}>{'<'} Create New Password</Text>
+        <Text style={styles.backText}>{'<'} {t('create_new_password')}</Text>
       </TouchableOpacity>
 
       <Image source={require('../assets/images/confirm.png')} style={styles.lockIcon} />
 
-      <Text style={styles.subtitle}>Your new password must be different from previously used passwords</Text>
+      <Text style={styles.subtitle}>{t('new_password_hint')}</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="New Password"
+        placeholder={t('new_password')}
         placeholderTextColor="#777"
         secureTextEntry
         value={password}
@@ -40,7 +42,7 @@ const CreateNewPasswordScreen = () => {
       
       <TextInput
         style={styles.input}
-        placeholder="Confirm Password"
+        placeholder={t('confirm_password')}
         placeholderTextColor="#777"
         secureTextEntry
         value={confirmPassword}
@@ -48,7 +50,7 @@ const CreateNewPasswordScreen = () => {
       />
 
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveText}>Save</Text>
+        <Text style={styles.saveText}>{t('save')}</Text>
       </TouchableOpacity>
     </View>
   );

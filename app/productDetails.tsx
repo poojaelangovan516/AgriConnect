@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductDetails() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id, name, quantity, price, color, image } = useLocalSearchParams();
 
   return (
@@ -14,7 +16,7 @@ export default function ProductDetails() {
         <FontAwesome name="arrow-left" size={20} color="black" />
       </TouchableOpacity>
 
-      {/* Edit Button - Navigates to Update Product Page */}
+      {/* Edit Button */}
       <TouchableOpacity
         style={styles.editButton}
         onPress={() =>
@@ -28,31 +30,32 @@ export default function ProductDetails() {
       </TouchableOpacity>
 
       {/* Product Image */}
-      {/* <Image source={require('../assets/images/tomato.jpg')} style={styles.image} /> */}
       <Image source={require('../assets/images/tomato.jpg')} style={styles.image} />
-
 
       {/* Product Name */}
       <Text style={styles.title}>{name}</Text>
 
       {/* Description */}
       <Text style={styles.description}>
-        The {name} is a nutrient-rich vegetable, packed with vitamins and antioxidants.
-        It’s versatile, eaten raw or cooked in various dishes worldwide.
+        {t('productDescription', { name })}
       </Text>
 
       {/* Pricing Section */}
       <View style={styles.priceContainer}>
         <Text style={styles.marketPrice}>
-          Market price{"\n"}<Text style={styles.price}>₹{parseInt(price) + 5}/kg</Text>
+          {t('marketPrice')}
+          {"\n"}
+          <Text style={styles.price}>₹{parseInt(price) + 5}/kg</Text>
         </Text>
         <Text style={styles.yourPrice}>
-          Your price{"\n"}<Text style={styles.price}>₹{price}/kg</Text>
+          {t('yourPrice')}
+          {"\n"}
+          <Text style={styles.price}>₹{price}/kg</Text>
         </Text>
       </View>
 
       {/* Reviews Section */}
-      <Text style={styles.reviewTitle}>Product Reviews</Text>
+      <Text style={styles.reviewTitle}>{t('productReviews')}</Text>
       <View style={styles.reviewContainer}>
         <View style={styles.reviewerInfo}>
           <View style={styles.profileIcon}>
@@ -67,7 +70,7 @@ export default function ProductDetails() {
           <FontAwesome name="star-o" size={16} color="gold" />
         </View>
         <Text style={styles.reviewText}>
-          Fresh and good quality. Clean and well-packed.
+          {t('reviewText')}
         </Text>
       </View>
     </View>
@@ -161,4 +164,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-

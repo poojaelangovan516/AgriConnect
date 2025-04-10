@@ -1,31 +1,51 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function AddProduct() {
-    const router = useRouter();  
-  
-    return (
+  const router = useRouter();
+  const { t } = useTranslation();
+
+  return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../assets/images/logo_img.png')} // ✅ Correct path
+          source={require('../assets/images/logo_img.png')}
           style={{ width: 100, height: 100 }}
         />
-        <Text style={styles.title}>AgriConnect</Text>
+        <Text style={styles.title}>{t('agriConnect')}</Text>
       </View>
-      <Text style={styles.registerText}>Add your farm-fresh products now!</Text>
-      <TextInput style={styles.input} placeholder="Product name" placeholderTextColor="#555" />
-      <TextInput style={styles.input} placeholder="Category" placeholderTextColor="#555" />
-      <TextInput style={styles.input} placeholder="Quantity" placeholderTextColor="#555" />
-      <TextInput style={styles.description} placeholder="Description" placeholderTextColor="#555" />
+
+      <Text style={styles.registerText}>{t('addFarmFreshProducts')}</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder={t('productName')}
+        placeholderTextColor="#555"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder={t('category')}
+        placeholderTextColor="#555"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder={t('quantity')}
+        placeholderTextColor="#555"
+      />
+      <TextInput
+        style={styles.description}
+        placeholder={t('description')}
+        placeholderTextColor="#555"
+      />
+
       <TouchableOpacity style={styles.signUpButton}>
-        <Text style={styles.signUpText}>Add product</Text>
+        <Text style={styles.signUpText}>{t('addProduct')}</Text>
       </TouchableOpacity>
     </View>
   );
-};
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,

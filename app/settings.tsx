@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -14,7 +16,7 @@ export default function SettingsScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Settings</Text>
+        <Text style={styles.headerTitle}>{t('settings')}</Text>
       </View>
 
       {/* Profile Section */}
@@ -30,25 +32,25 @@ export default function SettingsScreen() {
 
       {/* Account Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account</Text>
+        <Text style={styles.sectionTitle}>{t('account')}</Text>
         <TouchableOpacity style={styles.option} onPress={() => router.push('/editProfile')}>
           <FontAwesome5 name="user-edit" size={18} color="green" />
-          <Text style={styles.optionText}>Edit Profile</Text>
+          <Text style={styles.optionText}>{t('editProfile')}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.option} onPress={() => router.push('/mailpassword')}>
           <Ionicons name="lock-closed-outline" size={20} color="green" />
-          <Text style={styles.optionText}>Change Password</Text>
+          <Text style={styles.optionText}>{t('changePassword')}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
       </View>
 
       {/* Preferences Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Preferences</Text>
+        <Text style={styles.sectionTitle}>{t('preferences')}</Text>
         <TouchableOpacity style={styles.option} onPress={() => router.push('/language')}>
           <FontAwesome5 name="language" size={18} color="green" />
-          <Text style={styles.optionText}>Languages</Text>
+          <Text style={styles.optionText}>{t('languages')}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
       </View>

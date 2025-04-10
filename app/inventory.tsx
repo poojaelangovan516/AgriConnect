@@ -3,9 +3,11 @@ import { useRouter } from 'expo-router';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { inventoryData } from './inventoryfile';
+import { useTranslation } from 'react-i18next';
 
 export default function InventoryScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -13,9 +15,11 @@ export default function InventoryScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Inventory</Text>
+        <Text style={styles.header}>{t('inventory')}</Text>
       </View>
+      
       <Image source={require('../assets/images/inventory_management.jpg')} style={styles.headerImage} />
+      
       <FlatList
         data={inventoryData}
         keyExtractor={(item) => item.id}
@@ -23,8 +27,12 @@ export default function InventoryScreen() {
           <View style={styles.inventoryItem}>
             <Image source={item.image} style={styles.image} />
             <View>
-              <Text style={styles.productName}>Product Name: {item.productName}</Text>
-              <Text style={styles.quantity}>Quantity Available: {item.quantity}</Text>
+              <Text style={styles.productName}>
+                {t('productName')}: {item.productName}
+              </Text>
+              <Text style={styles.quantity}>
+                {t('quantityAvailable')}: {item.quantity}
+              </Text>
             </View>
           </View>
         )}

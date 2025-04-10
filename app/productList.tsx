@@ -3,9 +3,11 @@ import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { products } from './product';
+import { useTranslation } from 'react-i18next'; // ✅ Added import
 
 export default function ProductsScreen() {
   const router = useRouter();
+  const { t } = useTranslation(); // ✅ Hook for translations
 
   const handleProductPress = (product) => {
     router.push({
@@ -28,17 +30,17 @@ export default function ProductsScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Products</Text>
+        <Text style={styles.headerTitle}>{t('products')}</Text> {/* ✅ Translated */}
       </View>
 
       {/* Banner */}
       <View style={styles.banner}>
-        <Text style={styles.bannerText}>Fresh Vegetables are ready!</Text>
+        <Text style={styles.bannerText}>{t('freshVegetablesReady')}</Text> {/* ✅ Translated */}
         <Image source={require('../assets/images/banner.jpg')} style={styles.bannerImage} />
       </View>
 
       {/* Section Title */}
-      <Text style={styles.sectionTitle}>Sell Your Harvest Directly!</Text>
+      <Text style={styles.sectionTitle}>{t('sellYourHarvestDirectly')}</Text> {/* ✅ Translated */}
 
       {/* Product List */}
       <FlatList
@@ -55,8 +57,8 @@ export default function ProductsScreen() {
               </TouchableOpacity>
             </View>
             <View style={styles.bottomRow}>
-              <Text style={styles.productInfo}>Available: {item.quantity}</Text>
-              <Text style={styles.productPrice}>Price: {item.price}</Text>
+              <Text style={styles.productInfo}>{t('available')}: {item.quantity}</Text> {/* ✅ Translated */}
+              <Text style={styles.productPrice}>{t('price')}: {item.price}</Text> {/* ✅ Translated */}
             </View>
           </TouchableOpacity>
         )}

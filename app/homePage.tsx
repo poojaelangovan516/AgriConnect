@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { ProgressBar } from 'react-native-paper'; // Install using: npm install react-native-paper
+import { ProgressBar } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Icons for navigation
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   // Order Counts
   const totalOrders = 9;
@@ -19,7 +21,7 @@ export default function HomePage() {
         <TouchableOpacity onPress={() => router.push('./menu')}>
           <Ionicons name="menu" size={28} color="black" />
         </TouchableOpacity>
-        <Text style={styles.navTitle}>AgriConnect</Text>
+        <Text style={styles.navTitle}>{t('agriConnect')}</Text>
         <TouchableOpacity>
           <Ionicons name="notifications" size={28} color="black" />
         </TouchableOpacity>
@@ -28,7 +30,7 @@ export default function HomePage() {
       {/* ✅ New UI Section Below Top Navigation */}
       <View style={styles.newSection}>
         <View style={styles.textContainer}>
-          <Text style={styles.quoteText}>The land is not just soil, {'\n'}It's our soul.</Text>
+          <Text style={styles.quoteText}>{t('landQuote')}</Text>
         </View>
         <Image source={require('../assets/images/cowfarm.png')} style={styles.cowFarmImage} />
       </View>
@@ -38,57 +40,56 @@ export default function HomePage() {
         {/* ✅ Total Orders */}
         <TouchableOpacity style={styles.orderItem} onPress={() => router.push('./TotalOrders')}>
           <Image source={require('../assets/images/totalorder.png')} style={styles.orderImage} />
-          <Text style={styles.orderText}>Total Orders: {totalOrders}</Text>
+          <Text style={styles.orderText}>{t('totalOrders')}: {totalOrders}</Text>
         </TouchableOpacity>
 
         {/* ✅ Completed Orders */}
         <TouchableOpacity style={styles.orderItem} onPress={() => router.push('./completedOrders')}>
           <Image source={require('../assets/images/completed.png')} style={styles.orderImage} />
-          <Text style={styles.orderText}>Completed Orders: {completedOrders}</Text>
+          <Text style={styles.orderText}>{t('completedOrders')}: {completedOrders}</Text>
         </TouchableOpacity>
 
         {/* ✅ Pending Orders */}
         <TouchableOpacity style={styles.orderItem} onPress={() => router.push('./pendingOrders')}>
           <Image source={require('../assets/images/pending.png')} style={styles.orderImage} />
-          <Text style={styles.orderText}>Pending Orders: {pendingOrders}</Text>
+          <Text style={styles.orderText}>{t('pendingOrders')}: {pendingOrders}</Text>
         </TouchableOpacity>
 
         {/* ✅ Order Analytics */}
         <TouchableOpacity style={styles.orderItem} onPress={() => router.push('./analytics')}>
           <Image source={require('../assets/images/analytics.jpeg')} style={styles.orderImage} />
-          <Text style={styles.orderText}>Order Analytics</Text>
+          <Text style={styles.orderText}>{t('orderAnalytics')}</Text>
         </TouchableOpacity>
 
         {/* ✅ Today's Analytics Section */}
         <View style={styles.analyticsSection}>
-          <Text style={styles.analyticsTitle}>Today's Analytics</Text>
+          <Text style={styles.analyticsTitle}>{t('todaysAnalytics')}</Text>
 
           {/* Total Orders */}
           <View style={styles.analyticsItem}>
-            <Text style={styles.analyticsLabel}>Total Orders</Text>
+            <Text style={styles.analyticsLabel}>{t('totalOrders')}</Text>
             <ProgressBar progress={totalOrders / 100} color="#0057D9" style={styles.progressBar} />
             <Text style={styles.analyticsValue}>{totalOrders}%</Text>
           </View>
 
           {/* Completed Orders */}
           <View style={styles.analyticsItem}>
-            <Text style={styles.analyticsLabel}>Completed Orders</Text>
+            <Text style={styles.analyticsLabel}>{t('completedOrders')}</Text>
             <ProgressBar progress={completedOrders / totalOrders} color="#0057D9" style={styles.progressBar} />
             <Text style={styles.analyticsValue}>{((completedOrders / totalOrders) * 100).toFixed(0)}%</Text>
           </View>
 
           {/* Pending Orders */}
           <View style={styles.analyticsItem}>
-            <Text style={styles.analyticsLabel}>Pending Orders</Text>
+            <Text style={styles.analyticsLabel}>{t('pendingOrders')}</Text>
             <ProgressBar progress={pendingOrders / totalOrders} color="#0057D9" style={styles.progressBar} />
             <Text style={styles.analyticsValue}>{((pendingOrders / totalOrders) * 100).toFixed(0)}%</Text>
           </View>
         </View>
-
       </ScrollView>
 
-       {/* 🔹 Floating Plus Button */}
-       <TouchableOpacity style={styles.floatingButton} onPress={() => router.push('./addProduct')}>
+      {/* 🔹 Floating Plus Button */}
+      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push('./addProduct')}>
         <Ionicons name="add" size={40} color="white" />
       </TouchableOpacity>
 
@@ -136,9 +137,9 @@ const styles = StyleSheet.create({
     height: 90,
     width: 200,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  quoteText: { color: 'white', fontSize: 16, textAlign: 'center', },
+  quoteText: { color: 'white', fontSize: 16, textAlign: 'center' },
   cowFarmImage: { width: 100, height: 100, resizeMode: 'contain' },
   scrollContainer: { paddingBottom: 80, paddingHorizontal: 10 },
   orderItem: {
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   orderImage: { width: 200, height: 180, marginBottom: 5, marginLeft: 160 },
-  orderText: { fontSize: 25, fontWeight: 'bold', marginRight: 200, marginTop: -80 ,},
+  orderText: { fontSize: 25, fontWeight: 'bold', marginRight: 200, marginTop: -80 },
   floatingButton: {
     position: 'absolute',
     bottom: 80,
@@ -174,10 +175,34 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   navIcon: { width: 30, height: 30 },
-  analyticsSection: { marginTop: 30},
-  analyticsTitle: { fontSize: 20},
-  analyticsItem: { fontSize: 16, marginTop: 30},
-  analyticsLabel: { marginBottom: 10},
-  analyticsValue: { marginTop: 5}
-
+  analyticsSection: {
+    backgroundColor: '#F5FFEF',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  analyticsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#1B5E20',
+  },
+  analyticsItem: {
+    marginBottom: 15,
+  },
+  analyticsLabel: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#333',
+  },
+  progressBar: {
+    height: 10,
+    borderRadius: 5,
+  },
+  analyticsValue: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'right',
+  },
 });

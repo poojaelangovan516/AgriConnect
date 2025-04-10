@@ -1,15 +1,17 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { t } = useTranslation(); // Initialize translation
 
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter both email and password.');
+      Alert.alert(t('error'), t('please_enter_email_password'));
       return;
     }
     router.push('./homePage'); // Redirect only if fields are filled
@@ -25,13 +27,13 @@ export default function LoginScreen() {
 
       {/* Login Text */}
       <Text style={styles.loginText}>
-        <Text style={{ color: 'green' }}>Log in</Text> to your account
+        <Text style={{ color: 'green' }}>{t('log_in')}</Text> {t('to_your_account')}
       </Text>
 
       {/* Email Input */}
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t('email')}
         placeholderTextColor="#555"
         value={email}
         onChangeText={setEmail} // Capture input value
@@ -41,7 +43,7 @@ export default function LoginScreen() {
       {/* Password Input */}
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder={t('password')}
         secureTextEntry
         placeholderTextColor="#555"
         value={password}
@@ -50,19 +52,19 @@ export default function LoginScreen() {
 
       {/* Forgot Password */}
       <TouchableOpacity>
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <Text style={styles.forgotPassword}>{t('forgot_password')}</Text>
       </TouchableOpacity>
 
       {/* Sign In Button */}
       <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
-        <Text style={styles.signInText}>Sign in</Text>
+        <Text style={styles.signInText}>{t('sign_in')}</Text>
       </TouchableOpacity>
 
       {/* Sign Up Navigation */}
       <Text style={styles.signUpText}>
-        Don’t have an account?{' '}
+        {t('dont_have_account')}{' '}
         <Text style={styles.signUpLink} onPress={() => router.push('./signup')}>
-          Sign up
+          {t('sign_up')}
         </Text>
       </Text>
     </View>

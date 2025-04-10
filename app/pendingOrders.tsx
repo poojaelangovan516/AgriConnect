@@ -3,9 +3,11 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { orders } from './pendingOrdersData';
+import { useTranslation } from 'react-i18next';
 
 export default function PendingOrdersScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -13,20 +15,30 @@ export default function PendingOrdersScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Pending Orders</Text>
+        <Text style={styles.header}>{t('pendingOrders')}</Text>
       </View>
+
       <Image source={require('../assets/images/pendingOrders.jpg')} style={styles.headerImage} />
+
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.orderItem}>
             <View>
-              <Text style={styles.orderNumber}>Order#: {item.orderNumber}</Text>
-              <Text style={styles.orderedOn}>Ordered on</Text>
+              <Text style={styles.orderNumber}>{t('orderNumber')}: {item.orderNumber}</Text>
+              <Text style={styles.orderedOn}>{t('orderedOn')}</Text>
               <Text style={styles.orderDate}>{item.date}</Text>
             </View>
-            <TouchableOpacity onPress={() => router.push({ pathname: '/trackpending', params: { orderNumber: item.orderNumber, date: item.date } })}>
+
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: '/trackpending',
+                  params: { orderNumber: item.orderNumber, date: item.date },
+                })
+              }
+            >
               <Image source={item.image} style={styles.image} />
             </TouchableOpacity>
           </View>

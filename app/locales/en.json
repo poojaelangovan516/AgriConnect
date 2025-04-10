@@ -1,0 +1,167 @@
+{
+    "welcome": "Welcome",
+    "chooseLanguage": "Choose Your Language",
+    "continue": "Continue",
+    "settings": "Settings",
+    "orders": "Orders",
+    "agriConnect": "AgriConnect",
+    "landQuote": "The land is not just soil, It's our soul.",
+    "totalOrders": "Total Orders",
+    "completedOrders": "Completed Orders",
+    "pendingOrders": "Pending Orders",
+    "orderAnalytics": "Order Analytics",
+    "todaysAnalytics": "Today's Analytics",
+    "languageInfo": "Your language preference can be changed at any time in Settings.",
+    "products": "Products",
+  "freshVegetablesReady": "Fresh Vegetables are ready!",
+  "sellYourHarvestDirectly": "Sell Your Harvest Directly!",
+  "available": "Available",
+  "price": "Price",
+  
+    "productDescription": "The {{name}} is a nutrient-rich vegetable, packed with vitamins and antioxidants. It’s versatile, eaten raw or cooked in various dishes worldwide.",
+    "marketPrice": "Market price",
+    "yourPrice": "Your price",
+    "productReviews": "Product Reviews",
+    "reviewText": "Fresh and good quality. Clean and well-packed.",
+    "updateProduct": "Update Product",
+    "updateProductDetails": "Update your product details!",
+    "productName": "Product Name",
+    "category": "Category",
+    "quantityExample": "Quantity (e.g. 20kg)",
+    "marketPriceExample": "Market Price (e.g. 30/kg)",
+    "yourPriceExample": "Your Price (e.g. 24/kg)",
+    "done": "Done",
+   
+  "addFarmFreshProducts": "Add your farm-fresh products now!",
+
+
+  "quantity": "Quantity",
+  "description": "Description",
+  "addProduct": "Add product",
+  "analytics": "Analytics",
+  "yourDailyProgress": "Your Daily Progress",
+ "totalLabel": "Totally",
+"orderNumber": "Order#:",
+"orderedOn": "Ordered on",
+"TotalOrders": {
+    "title": "Total Orders",
+    "totalLabel": "Totally",
+    "orderNumber": "Order#: ",
+    "orderedOn": "Ordered on"
+  },
+"CompletedOrders": {
+    "title": "Completed Orders",
+    "orderNumber": "Order#: ",
+    "orderedOn": "Ordered on"
+  },
+  
+    "trackOrders": "Track Orders",
+    "customerName": "Customer Name",
+    
+    "address": "Address",
+    "eggplant": "EggPlant",
+   
+    "totalPrice": "Total Price",
+    "track": "Track",
+    "accept": "Accept",
+    "packed": "Packed",
+    "inTransit": "In-Transit",
+    "delivered": "Delivered",
+    "paymentDetail": "Payment Detail",
+    "cashOnDelivery": "Cash On Delivery",
+    "paymentReceivedOn": "Payment received on",
+    "onlinePayment": "Online Payment",
+    "menu": "Menu",
+    "inventory": "Inventory",
+    "manageInventory": "Manage your farm inventory.",
+   
+    "yourOrdersAreCompleted": "Your orders are completed.",
+
+    "growSmartFarmBetter": "Grow smart, farm better.",
+    "about": "About",
+    "exploreFeaturesForFarmers": "Explore features for farmers.",
+    "helpSupport": "Help & Support",
+    "getHelpAndSupport": "Get Help and Support.",
+  
+  "quantityAvailable": "Quantity Available",
+  "account": "Account",
+  "edit_profile": "Edit Profile",
+  "change_password": "Change Password",
+  "preferences": "Preferences",
+  "languages": "Languages",
+  "username": "Sekar",
+ 
+  "name": "Name",
+  "gender": "Gender",
+  "email": "Email",
+  "phone": "Phone",
+  "location": "Location",
+
+  "male": "Male",
+
+  "enter_email": "Please Enter Your Email Address To Receive a Verification Code",
+
+  "send": "Send",
+  "try_another_way": "Try another Way",
+  "back": "Back",
+  "error": "Error",
+  "email_required": "Please enter your email address",
+  
+    
+    "enter_phone_number": "Please Enter Your Phone Number To Receive an OTP",
+    "mobile_number": "Mobile number",
+    
+    "phone_number_required": "Please enter your phone number",
+    "verify_email": "Verify Your Email",
+  "enter_code": "Please enter the 4-digit code sent to your email",
+  "enter_code_placeholder": "Enter Code",
+  "resend_code": "Resend Code",
+  "verify": "Verify",
+ 
+  "invalid_code": "Please enter a valid 4-digit code",
+  "create_new_password": "Create New Password",
+  "new_password_hint": "Your new password must be different from previously used passwords",
+  "new_password": "New Password",
+  "confirm_password": "Confirm Password",
+  "save": "Save",
+ 
+  "enter_both_passwords": "Please enter both password fields",
+  "passwords_do_not_match": "Passwords do not match",
+  "success": "Success",
+  "password_changed_successfully": "Password changed successfully",
+  
+    "register": "Register",
+    "your_account": "your account",
+ 
+    "password": "Password",
+
+    "category_farmer": "Category (Farmer)",
+    "sign_up": "Sign up",
+    "already_have_account": "Already have an account?",
+    "sign_in": "Sign in",
+ 
+    "all_fields_required": "All fields are required!",
+
+    "category_must_be_farmer": "Category must be \"farmer\" to sign up.",
+  
+  
+  
+    
+      "log_in": "Log in",
+      "to_your_account": "to your account",
+     
+      "forgot_password": "Forgot Password?",
+     
+      "dont_have_account": "Don’t have an account?",
+     
+      "please_enter_email_password": "Please enter both email and password."
+    
+    
+  
+  
+  
+  
+  
+
+  }
+  

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 const VerifyEmailScreen = () => {
   const router = useRouter();
   const [code, setCode] = useState('');
+  const { t } = useTranslation(); // Initialize translation
 
   const handleVerify = () => {
     if (code.length !== 4) {
-      Alert.alert('Error', 'Please enter a valid 4-digit code');
+      Alert.alert(t('error'), t('invalid_code'));
       return;
     }
     router.push('./confirmpasswrd');
@@ -17,17 +19,17 @@ const VerifyEmailScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backText}>{'<'} Back</Text>
+        <Text style={styles.backText}>{'<'} {t('back')}</Text>
       </TouchableOpacity>
 
       <Image source={require('../assets/images/confirm.png')} style={styles.lockIcon} />
 
-      <Text style={styles.title}>Verify Your Email</Text>
-      <Text style={styles.subtitle}>Please enter the 4-digit code sent to your email</Text>
+      <Text style={styles.title}>{t('verify_email')}</Text>
+      <Text style={styles.subtitle}>{t('enter_code')}</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Enter Code"
+        placeholder={t('enter_code')}
         placeholderTextColor="#777"
         keyboardType="numeric"
         maxLength={4}
@@ -37,11 +39,11 @@ const VerifyEmailScreen = () => {
       />
 
       <TouchableOpacity>
-        <Text style={styles.resendCode}>Resend Code</Text>
+        <Text style={styles.resendCode}>{t('resend_code')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.sendButton} onPress={handleVerify}>
-        <Text style={styles.sendText}>Verify</Text>
+        <Text style={styles.sendText}>{t('verify')}</Text>
       </TouchableOpacity>
     </View>
   );

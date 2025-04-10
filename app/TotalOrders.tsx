@@ -3,9 +3,11 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { orders } from './pendingOrdersData';
+import { useTranslation } from 'react-i18next'; // ✅ added
 
 export default function TotalOrdersScreen() {
   const router = useRouter();
+  const { t } = useTranslation(); // ✅ added
 
   return (
     <View style={styles.container}>
@@ -14,13 +16,13 @@ export default function TotalOrdersScreen() {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.header}>Total Orders</Text>
+        <Text style={styles.header}>{t('TotalOrders.title')}</Text> {/* ✅ updated */}
       </View>
 
       {/* Image & Total Count */}
       <Image source={require('../assets/images/totalOrders.jpg')} style={styles.headerImage} />
       <Text style={styles.totalCount}>5</Text>
-      <Text style={styles.totalLabel}>Totally</Text>
+      <Text style={styles.totalLabel}>{t('TotalOrders.totalLabel')}</Text> {/* ✅ updated */}
 
       {/* Orders List */}
       <FlatList
@@ -29,8 +31,8 @@ export default function TotalOrdersScreen() {
         renderItem={({ item }) => (
           <View style={styles.orderItem}>
             <View>
-              <Text style={styles.orderNumber}>Order#: {item.orderNumber}</Text>
-              <Text style={styles.orderedOn}>Ordered on</Text>
+              <Text style={styles.orderNumber}>{t('TotalOrders.orderNumber')} {item.orderNumber}</Text> {/* ✅ updated */}
+              <Text style={styles.orderedOn}>{t('TotalOrders.orderedOn')}</Text> {/* ✅ updated */}
               <Text style={styles.orderDate}>{item.date}</Text>
             </View>
             <Image source={item.image} style={styles.image} />

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 const ChangePasswordScreen = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const { t } = useTranslation(); // Initialize translation
 
   const handleSend = () => {
     if (email.trim() === '') {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert(t('error'), t('email_required'));
       return;
     }
     router.push('./mailotp');
@@ -17,17 +19,17 @@ const ChangePasswordScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backText}>{'<'} Back</Text>
+        <Text style={styles.backText}>{'<'} {t('back')}</Text>
       </TouchableOpacity>
 
       <Image source={require('../assets/images/confirm.png')} style={styles.lockIcon} />
 
-      <Text style={styles.title}>Change Password</Text>
-      <Text style={styles.subtitle}>Please Enter Your Email Address To Receive a Verification Code</Text>
+      <Text style={styles.title}>{t('change_password')}</Text>
+      <Text style={styles.subtitle}>{t('enter_email')}</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t('email')}
         placeholderTextColor="#777"
         keyboardType="email-address"
         autoCapitalize="none"
@@ -37,11 +39,11 @@ const ChangePasswordScreen = () => {
 
       {/* Navigation to the phone number entry screen */}
       <TouchableOpacity onPress={() => router.push('./mobilepassword')}>
-        <Text style={styles.tryAnotherWay}>Try another Way</Text>
+        <Text style={styles.tryAnotherWay}>{t('try_another_way')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-        <Text style={styles.sendText}>Send</Text>
+        <Text style={styles.sendText}>{t('send')}</Text>
       </TouchableOpacity>
     </View>
   );

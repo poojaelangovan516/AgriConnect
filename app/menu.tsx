@@ -2,10 +2,14 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { menuItems } from './menufile';
+import { useTranslation } from 'react-i18next';
+import { getMenuItems } from './menufile';
 
 export default function MenuScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
+
+  const menuItems = getMenuItems(t);
 
   const handleNavigation = (route: any) => {
     router.push(route);
@@ -16,9 +20,9 @@ export default function MenuScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-                  <Ionicons name="arrow-back" size={24} color="white" />
-                </TouchableOpacity>
-        <Text style={styles.headerText}>Menu</Text>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>{t('menu')}</Text>
       </View>
 
       {/* Menu List */}
@@ -87,11 +91,3 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
-
-// Ensure your menuItems array in 'menufile.js' contains the correct routes:
-// Example:
-// export const menuItems = [
-//   { id: '1', title: 'Inventory', description: 'Manage inventory', icon: require('../assets/inventory.png'), route: '/inventory' },
-//   { id: '2', title: 'Completed Orders', description: 'View past orders', icon: require('../assets/completed.png'), route: '/completedOrders' },
-//   { id: '3', title: 'Settings', description: 'Change app settings', icon: require('../assets/settings.png'), route: '/settings' },
-// ];
