@@ -20,7 +20,7 @@ const TrackOrderScreen = () => {
           <Text style={styles.detailText}>Price: 70/kg</Text>
           <Text style={styles.totalPrice}>Total Price: 700</Text>
         </View>
-        <Image source={require('../assets/images/eggplant.png')} style={styles.productImage} />
+      
       </View>
 
       <Text style={styles.trackTitle}>Track</Text>
