@@ -133,10 +133,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B5E20',
     padding: 10,
     borderRadius: 50,
-    height: 130,
-    width: 250,
+    height: 90,
+    width: 200,
+    alignSelf: 'center',
+    justifyContent: 'center'
   },
-  quoteText: { color: 'white', fontSize: 16, textAlign: 'center',marginTop: 30, },
+  quoteText: { color: 'white', fontSize: 16, textAlign: 'center', },
   cowFarmImage: { width: 100, height: 100, resizeMode: 'contain' },
   scrollContainer: { paddingBottom: 80, paddingHorizontal: 10 },
   orderItem: {
@@ -172,4 +174,10 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   navIcon: { width: 30, height: 30 },
+  analyticsSection: { marginTop: 30},
+  analyticsTitle: { fontSize: 20},
+  analyticsItem: { fontSize: 16, marginTop: 30},
+  analyticsLabel: { marginBottom: 10},
+  analyticsValue: { marginTop: 5}
+
 });
