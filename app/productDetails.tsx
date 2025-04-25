@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
@@ -10,14 +10,16 @@ export default function ProductDetails() {
   const { id, name, quantity, price, color, image, market } =
     useLocalSearchParams();
 
+  useEffect(() => {
+    console.log(name);
+  }, []);
+
   return (
     <View style={styles.container}>
-      {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <FontAwesome name="arrow-left" size={20} color="black" />
       </TouchableOpacity>
 
-      {/* Edit Button */}
       <TouchableOpacity
         style={styles.editButton}
         onPress={() =>
@@ -30,21 +32,17 @@ export default function ProductDetails() {
         <FontAwesome name="pencil" size={20} color="black" />
       </TouchableOpacity>
 
-      {/* Product Image */}
       <Image
-        source={require("../assets/images/tomato.jpg")}
+        source={require("../assets/images/fallbackProduct.jpg")}
         style={styles.image}
       />
 
-      {/* Product Name */}
       <Text style={styles.title}>{name}</Text>
 
-      {/* Description */}
       <Text style={styles.description}>
         {t("productDescription", { name })}
       </Text>
 
-      {/* Pricing Section */}
       <View style={styles.priceContainer}>
         <Text style={styles.marketPrice}>
           {t("marketPrice")}
@@ -58,28 +56,13 @@ export default function ProductDetails() {
         </Text>
       </View>
 
-      {/* Reviews Section */}
-      <Text style={styles.reviewTitle}>{t("productReviews")}</Text>
-      <View style={styles.reviewContainer}>
-        <View style={styles.reviewerInfo}>
-          <View style={styles.profileIcon}>
-            <Text style={styles.initial}>K</Text>
-          </View>
-          <Text style={styles.reviewerName}>Karunan</Text>
-        </View>
-        <View style={styles.starContainer}>
-          {[...Array(4)].map((_, index) => (
-            <FontAwesome key={index} name="star" size={16} color="gold" />
-          ))}
-          <FontAwesome name="star-o" size={16} color="gold" />
-        </View>
-        <Text style={styles.reviewText}>{t("reviewText")}</Text>
-      </View>
+      <Text style={styles.quantityText}>
+        {t("availableQuantity")}: {quantity} kg
+      </Text>
     </View>
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -130,39 +113,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  reviewTitle: {
+  quantityText: {
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#333",
     marginTop: 10,
-  },
-  reviewContainer: {
-    marginTop: 10,
-  },
-  reviewerInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileIcon: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: "red",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  initial: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  reviewerName: {
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  starContainer: {
-    flexDirection: "row",
-    marginVertical: 5,
-  },
-  reviewText: {
-    fontSize: 16,
   },
 });

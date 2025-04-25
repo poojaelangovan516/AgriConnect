@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,92 +6,108 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { products } from "./product";
-import { useTranslation } from "react-i18next"; // ✅ Added import
+import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { baseUrl } from "@/constants/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const { width } = Dimensions.get("window");
+const cardWidth = (width - 40) / 2;
+
+type ProductType = {
+  id: number;
+  userId: number;
+  userName: string;
+  name: string;
+  price: number;
+  discount: number;
+  offerPrice: number;
+  priceType: string;
+  noOfReviews: number;
+  rating: number;
+  availableQuantity: number;
+  img: string;
+  description: string;
+  category: string;
+  categoryId: number;
+};
 
 export default function ProductsScreen() {
   const router = useRouter();
-  const { t } = useTranslation(); // ✅ Hook for translations
+  const { t } = useTranslation();
+  const [productsData, setProductsData] = useState<ProductType[]>([]);
 
-  const handleProductPress = (product: {
-    id: any;
-    name: any;
-    quantity: any;
-    price: any;
-    color: any;
-    image: any;
-    market?: any;
-  }) => {
+  const getProducts = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("user");
+      const response = await axios.get(`${baseUrl}product/user/${userId}`);
+      const data: ProductType[] = response.data;
+      setProductsData(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const handleProductPress = (product: ProductType) => {
     router.push({
       pathname: "/productDetails",
       params: {
         id: product.id,
         name: product.name,
-        quantity: product.quantity,
-        price: product.price,
-        color: product.color,
-        image: product.image,
-        market: product.market,
+        quantity: product.availableQuantity,
+        price: product.offerPrice || product.price,
+        image: product.img,
+        market: product.userId,
       },
     });
   };
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t("products")}</Text>{" "}
-        {/* ✅ Translated */}
+        <Text style={styles.headerTitle}>{t("products")}</Text>
       </View>
-      {/* Banner */}
+
       <View style={styles.banner}>
-        <Text style={styles.bannerText}>{t("freshVegetablesReady")}</Text>{" "}
-        {/* ✅ Translated */}
+        <Text style={styles.bannerText}>Fresh Products Ready</Text>
         <Image
           source={require("../assets/images/banner.jpg")}
           style={styles.bannerImage}
         />
       </View>
-      {/* Section Title */}
-      <Text style={styles.sectionTitle}>
-        {t("sellYourHarvestDirectly")}
-      </Text>{" "}
-      {/* ✅ Translated */}
-      {/* Product List */}
+
+      <Text style={styles.sectionTitle}>{t("sellYourHarvestDirectly")}</Text>
+
       <FlatList
-        data={products}
-        keyExtractor={(item) => item.id}
+        data={productsData}
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => handleProductPress(item)}
             style={styles.card}
           >
-            <View
-              style={[styles.categoryIcon, { backgroundColor: item.color }]}
-            />
-            <View style={styles.topRow}>
-              <Text style={styles.productName}>{item.name}</Text>
-              <TouchableOpacity onPress={() => handleProductPress(item)}>
-                <Image source={item.image} style={styles.productImage} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.bottomRow}>
-              <Text style={styles.productInfo}>
-                {t("available")}: {item.quantity}
-              </Text>{" "}
-              {/* ✅ Translated */}
-              <Text style={styles.productPrice}>
-                {t("price")}: {item.price}
-              </Text>{" "}
-              {/* ✅ Translated */}
-            </View>
+            <Image source={{ uri: item.img }} style={styles.productImage} />
+            <Text style={styles.productName} numberOfLines={1}>
+              {item.name}
+            </Text>
+            <Text style={styles.productInfo}>
+              {t("available")}: {item.availableQuantity}
+            </Text>
+            <Text style={styles.productPrice}>
+              {t("price")}: ₹{item.offerPrice || item.price}
+            </Text>
           </TouchableOpacity>
         )}
         contentContainerStyle={styles.listContainer}
@@ -117,48 +133,63 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   banner: {
-    backgroundColor: "white",
-    margin: 20,
-    borderRadius: 10,
-    padding: 15,
+    margin: 16,
+    borderRadius: 12,
+    padding: 12,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
   },
-  bannerText: { fontSize: 20, flex: 1 },
-  bannerImage: { width: 150, height: 100, resizeMode: "contain" },
-  sectionTitle: { fontSize: 18, marginLeft: 20, marginBottom: 10 },
-  listContainer: { paddingHorizontal: 10, paddingBottom: 80 },
+  bannerText: { fontSize: 16, flex: 1, fontWeight: "600" },
+  bannerImage: {
+    width: 100,
+    height: 70,
+    resizeMode: "contain",
+    marginLeft: 10,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 16,
+    marginBottom: 8,
+  },
+  listContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 80,
+  },
   card: {
-    flex: 1,
+    width: cardWidth,
     backgroundColor: "white",
-    margin: 10,
     borderRadius: 10,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
-    height: 150,
-  },
-  topRow: {
-    flexDirection: "row",
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    margin: 5,
     alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+    height: 160,
   },
-  categoryIcon: { width: 15, height: 15, borderRadius: 10, marginRight: 8 },
-  productName: { fontSize: 20, fontWeight: "bold", flex: 1 },
-  productImage: { width: 50, height: 50, resizeMode: "contain" },
-  bottomRow: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    width: "100%",
-    marginTop: 5,
+  productImage: {
+    width: 55,
+    height: 55,
+    resizeMode: "cover",
+    marginBottom: 6,
+    borderRadius: 6,
   },
-  productInfo: { fontSize: 16 },
-  productPrice: { fontSize: 16 },
+  productName: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 2,
+    textAlign: "center",
+  },
+  productInfo: {
+    fontSize: 12,
+    color: "#555",
+  },
+  productPrice: {
+    fontSize: 12,
+    color: "#000",
+    fontWeight: "bold",
+  },
 });

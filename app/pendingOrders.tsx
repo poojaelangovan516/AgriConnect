@@ -63,7 +63,7 @@ export default function CompletedOrdersScreen() {
           {t("Order")}: {item.id}
         </Text>
         <Text style={styles.infoText}>
-          {t("Ordered On")}: {item.date}
+          {t("Ordered On")}: {new Date(item.date).toLocaleDateString()}
         </Text>
         <Text style={styles.infoText}>
           {t("Quantity")}: {item.quantity}
@@ -78,7 +78,14 @@ export default function CompletedOrdersScreen() {
 
       <View style={styles.trackContainer}>
         <TouchableOpacity
-          onPress={() => router.push("./trackcompleted")}
+          onPress={() =>
+            router.push({
+              pathname: "./trackpending",
+              params: {
+                data: item.id,
+              },
+            })
+          }
           style={styles.trackButton}
         >
           <Text style={styles.trackButtonText}>Track</Text>

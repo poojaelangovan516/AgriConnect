@@ -1,82 +1,281 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import { router, useLocalSearchParams } from "expo-router";
+import axios from "axios";
+import { baseUrl } from "@/constants/api";
+
+interface Order {
+  id: number;
+  userId: number;
+  productId: number;
+  farmerId: number;
+  quantity: number;
+  totalPrice: number;
+  date: string;
+  status: string;
+}
+
+interface UserResponse {
+  userId: number;
+  userName: string;
+  addresses: string[];
+}
+
+interface ProductResponse {
+  name: string;
+  price: number;
+  discount: number;
+  img: string;
+}
 
 const TrackOrderScreen = () => {
   const { t } = useTranslation();
+  const { data } = useLocalSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState({
+    customerName: "",
+    orderNumber: 0,
+    address: "",
+    productName: "",
+    productPrice: 0,
+    productImage: "",
+    quantity: 0,
+    totalPrice: 0,
+    status: "",
+    orderedDate: "",
+  });
+
+  useEffect(() => {
+    const getOrderData = async () => {
+      try {
+        const { data: orderData }: { data: Order } = await axios.get(
+          `${baseUrl}order/${data}`
+        );
+        console.log(orderData);
+        const { data: userData }: { data: UserResponse } = await axios.get(
+          `${baseUrl}user/${orderData.userId}`
+        );
+        const { data: productData }: { data: ProductResponse } =
+          await axios.get(`${baseUrl}product/${orderData.productId}`);
+
+        setOrder({
+          orderNumber: orderData.id,
+          customerName: userData.userName,
+          address: userData.addresses?.[0] || "N/A",
+          productName: productData.name,
+          productImage: productData.img,
+          productPrice:
+            (productData.price * (100 - productData.discount)) / 100,
+          quantity: orderData.quantity,
+          totalPrice: orderData.totalPrice,
+          status: orderData.status,
+          orderedDate: new Date(orderData.date).toLocaleDateString(),
+        });
+      } catch (error) {
+        console.error("Error fetching order:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getOrderData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Text style={{ textAlign: "center", marginTop: 40 }}>Loading...</Text>
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{t('trackOrders')}</Text>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{t("Order")}</Text>
+      </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.label}>{t('customerName')}: <Text style={styles.value}>Arun</Text></Text>
-        <Text style={styles.label}>{t('orderNumber')}: <Text style={styles.value}>824193</Text></Text>
-        <Text style={styles.label}>{t('address')}: <Text style={styles.value}>12A/1, Anna Nagar, Coimbatore</Text></Text>
+        <Text style={styles.label}>
+          {t("customerName")}:{" "}
+          <Text style={styles.value}>{order.customerName}</Text>
+        </Text>
+        <Text style={styles.label}>
+          {t("orderNumber")}:{" "}
+          <Text style={styles.value}>{order.orderNumber}</Text>
+        </Text>
+        <Text style={styles.label}>
+          {t("orderedDate")}:{" "}
+          <Text style={styles.value}>{order.orderedDate}</Text>
+        </Text>
+        <Text style={styles.label}>
+          {t("address")}: <Text style={styles.value}>{order.address}</Text>
+        </Text>
       </View>
 
       <View style={styles.productContainer}>
-        <View>
-          <Text style={styles.productTitle}>{t('eggplant')}</Text>
-          <Text style={styles.detailText}>{t('quantity')}: 10kg</Text>
-          <Text style={styles.detailText}>{t('price')}: 70/kg</Text>
-          <Text style={styles.totalPrice}>{t('totalPrice')}: 700</Text>
+        <View style={styles.productDetails}>
+          <Text style={styles.productTitle}>{t(order.productName)}</Text>
+          <Text style={styles.detailText}>
+            {t("quantity")}: {order.quantity} kg
+          </Text>
+          <Text style={styles.detailText}>
+            {t("price")}: ₹{order.productPrice}/kg
+          </Text>
+          <Text style={styles.totalPrice}>
+            {t("totalPrice")}: ₹{order.totalPrice}
+          </Text>
         </View>
-
-        <Image source={require('../assets/images/eggPlant.jpg')} style={styles.productImage} />
+        <Image
+          source={{ uri: order.productImage }}
+          style={styles.productImage}
+        />
       </View>
 
-      <Text style={styles.trackTitle}>{t('track')}</Text>
-
+      <Text style={styles.trackTitle}>{t("Status")}</Text>
       <View style={styles.timeline}>
         <View style={styles.timelineItem}>
-          <FontAwesome name="check-square-o" size={24} color="orange" />
-          <Text style={styles.timelineText}>{t('accept')}</Text>
-          <Text style={styles.timeText}>05-Feb-2025, 10:03 AM</Text>
-        </View>
-        <View style={styles.timelineItem}>
-          <MaterialIcons name="inventory" size={24} color="orange" />
-          <Text style={styles.timelineText}>{t('packed')}</Text>
-          <Text style={styles.timeText}>07-Feb-2025, 11:16 AM</Text>
-        </View>
-        <View style={styles.timelineItem}>
-          <MaterialIcons name="local-shipping" size={24} color="green" />
-          <Text style={styles.timelineText}>{t('inTransit')}</Text>
-          <Text style={styles.timeText}>10-Feb-2025, 3:34 PM</Text>
-        </View>
-        <View style={styles.timelineItem}>
-          <MaterialIcons name="check-circle" size={24} color="green" />
-          <Text style={styles.timelineText}>{t('delivered')}</Text>
-          <Text style={styles.timeText}>12-Feb-2025</Text>
+          <Text style={styles.timelineText}>{t(order.status)}</Text>
         </View>
       </View>
 
-      <Text style={styles.trackTitle}>{t('paymentDetail')}</Text>
-      <Text style={styles.paymentText}>{t('cashOnDelivery')}</Text>
-      <Text style={styles.paymentReceived}>{t('paymentReceivedOn')} 12-Feb-2025, 11:12 AM</Text>
+      <Text style={styles.paymentText}>{t("cashOnDelivery")}</Text>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 },
-  infoContainer: { marginBottom: 20 },
-  label: { fontSize: 16, fontWeight: 'bold' },
-  value: { fontWeight: 'normal' },
-  productContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  productTitle: { fontSize: 18, fontWeight: 'bold' },
-  detailText: { fontSize: 16, color: '#666' },
-  totalPrice: { fontSize: 16, fontWeight: 'bold', marginTop: 5 },
-  productImage: { width: 80, height: 80, resizeMode: 'contain' },
-  trackTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
-  timeline: { paddingLeft: 10, borderLeftWidth: 2, borderLeftColor: 'green' },
-  timelineItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
-  timelineText: { fontSize: 16, marginLeft: 10, fontWeight: 'bold' },
-  timeText: { fontSize: 14, marginLeft: 10, color: '#666' },
-  paymentText: { fontSize: 16, fontWeight: 'bold' },
-  paymentReceived: { fontSize: 14, color: 'green', marginTop: 5 },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    marginBottom: 10,
+  },
+  backButton: {
+    position: "absolute",
+    left: 10,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 20,
+  },
+  infoContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+  },
+  value: {
+    fontWeight: "normal",
+    color: "#555",
+  },
+  productContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  productDetails: {
+    flex: 1,
+    marginRight: 20,
+  },
+  productTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+  },
+  detailText: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 5,
+  },
+  totalPrice: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#007bff",
+    marginTop: 10,
+  },
+  productImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    borderRadius: 10,
+  },
+  trackTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+    marginVertical: 15,
+  },
+  timeline: {
+    borderLeftWidth: 2,
+    borderLeftColor: "#007bff",
+    marginBottom: 20,
+  },
+  timelineItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  timelineText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#007bff",
+    marginLeft: 10,
+  },
+  paymentText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  completeButton: {
+    backgroundColor: "green",
+    paddingVertical: 12,
+    borderRadius: 6,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  cancelButton: {
+    backgroundColor: "red",
+    paddingVertical: 12,
+    borderRadius: 6,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  completeButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  cancelButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 });
 
 export default TrackOrderScreen;
