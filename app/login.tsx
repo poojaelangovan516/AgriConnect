@@ -1,39 +1,72 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import { useTranslation } from 'react-i18next'; // Import useTranslation hook
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
+import { baseUrl } from "@/constants/api";
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { t } = useTranslation(); // Initialize translation
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert(t('error'), t('please_enter_email_password'));
+      Alert.alert(t("error"), t("please_enter_email_password"));
       return;
     }
-    router.push('./homePage'); // Redirect only if fields are filled
+    try {
+      const response = await axios.post(
+        baseUrl + "user/login?userType=FARMER",
+        {
+          email,
+          password,
+        }
+      );
+      if (response.status === 200) {
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.id));
+        Alert.alert("Success", "Login successful!");
+        router.push("./homePage");
+      } else {
+        Alert.alert("Error", "Invalid credentials. Please try again.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
+    // router.push("./homePage"); // Redirect only if fields are filled
   };
 
   return (
     <View style={styles.container}>
       {/* Logo and App Name */}
       <View style={styles.logoContainer}>
-        <Image source={require('../assets/images/logo_img.png')} style={styles.logo} />
+        <Image
+          source={require("../assets/images/logo_img.png")}
+          style={styles.logo}
+        />
         <Text style={styles.title}>AgriConnect</Text>
       </View>
 
       {/* Login Text */}
       <Text style={styles.loginText}>
-        <Text style={{ color: 'green' }}>{t('log_in')}</Text> {t('to_your_account')}
+        <Text style={{ color: "green" }}>{t("log_in")}</Text>{" "}
+        {t("to_your_account")}
       </Text>
 
       {/* Email Input */}
       <TextInput
         style={styles.input}
-        placeholder={t('email')}
+        placeholder={t("email")}
         placeholderTextColor="#555"
         value={email}
         onChangeText={setEmail} // Capture input value
@@ -43,7 +76,7 @@ export default function LoginScreen() {
       {/* Password Input */}
       <TextInput
         style={styles.input}
-        placeholder={t('password')}
+        placeholder={t("password")}
         secureTextEntry
         placeholderTextColor="#555"
         value={password}
@@ -52,19 +85,19 @@ export default function LoginScreen() {
 
       {/* Forgot Password */}
       <TouchableOpacity>
-        <Text style={styles.forgotPassword}>{t('forgot_password')}</Text>
+        <Text style={styles.forgotPassword}>{t("forgot_password")}</Text>
       </TouchableOpacity>
 
       {/* Sign In Button */}
       <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
-        <Text style={styles.signInText}>{t('sign_in')}</Text>
+        <Text style={styles.signInText}>{t("sign_in")}</Text>
       </TouchableOpacity>
 
       {/* Sign Up Navigation */}
       <Text style={styles.signUpText}>
-        {t('dont_have_account')}{' '}
-        <Text style={styles.signUpLink} onPress={() => router.push('./signup')}>
-          {t('sign_up')}
+        {t("dont_have_account")}{" "}
+        <Text style={styles.signUpLink} onPress={() => router.push("./signup")}>
+          {t("sign_up")}
         </Text>
       </Text>
     </View>
@@ -74,15 +107,15 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
   },
   logoContainer: {
-    backgroundColor: 'green',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "green",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 40,
     borderBottomLeftRadius: 100,
     borderBottomRightRadius: 100,
@@ -93,51 +126,51 @@ const styles = StyleSheet.create({
   logo: {
     width: 80,
     height: 80,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
     marginTop: 10,
   },
   loginText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
-    width: '80%',
+    width: "80%",
     padding: 15,
     borderWidth: 1,
-    borderColor: 'green',
+    borderColor: "green",
     borderRadius: 10,
     marginBottom: 15,
   },
   forgotPassword: {
-    alignSelf: 'flex-end',
-    marginRight: '-38%',
+    alignSelf: "flex-end",
+    marginRight: "-38%",
     marginBottom: 20,
-    color: 'gray',
+    color: "gray",
   },
   signInButton: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     padding: 15,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
     borderRadius: 10,
   },
   signInText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   signUpText: {
     marginTop: 20,
     fontSize: 16,
   },
   signUpLink: {
-    color: 'green',
-    fontWeight: 'bold',
+    color: "green",
+    fontWeight: "bold",
   },
 });
