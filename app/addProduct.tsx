@@ -8,18 +8,39 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import { baseUrl } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Picker } from "@react-native-picker/picker";
 
+type category = {
+  id: number;
+  name: string;
+  img: string;
+  description: string;
+};
+
+type product = {
+  userId: string;
+  name: string;
+  price: string;
+  discount: string;
+  priceType: string;
+  availableQuantity: string;
+  img: string;
+  description: string;
+  categoryId: string;
+  noOfReviews: number;
+  rating: number;
+};
 export default function AddProduct() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<product>({
     userId: "",
     name: "",
     price: "",
@@ -32,20 +53,35 @@ export default function AddProduct() {
     noOfReviews: 0,
     rating: 0,
   });
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState("1");
+  const [category, setCategory] = useState<category[]>([]);
 
-  const [category, setCategory] = useState<any[]>([]);
+  const getUserId = async () => {
+    const userId = await AsyncStorage.getItem("user");
+    setUser(userId != null ? userId : "user");
+    setFormData((temp) => ({
+      ...temp,
+      userId: user,
+    }));
+  };
 
   useEffect(() => {
     getCategories();
+    getUserId();
   }, []);
 
   const getCategories = async () => {
+    setLoading(true); // Start loading
     try {
-      const response = await await axios.get(baseUrl + "category");
+      const response = await axios.get<category[]>(baseUrl + "category");
+      console.log("Categories response:", response.data); // Log the response
       const data = response.data;
       setCategory(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -73,12 +109,9 @@ export default function AddProduct() {
     } else {
       console.log(formData);
       try {
-        const userId = await AsyncStorage.getItem("user");
-        const validUserId = userId !== null ? userId : "";
-        setFormData((prev) => ({ ...prev, userId: validUserId }));
         const res = await axios.post(baseUrl + "product", formData);
         if (res.status === 201) {
-          alert("Success");
+          Alert.alert("Success", "Your product has been added");
           router.push("/homePage");
         }
       } catch (e) {
@@ -88,125 +121,126 @@ export default function AddProduct() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../assets/images/logo_img.png")}
-          style={{ width: 100, height: 100 }}
-        />
-        <Text style={styles.title}>{t("agriConnect")}</Text>
-      </View>
+    <>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../assets/images/logo_img.png")}
+              style={{ width: 100, height: 100 }}
+            />
+            <Text style={styles.title}>{t("agriConnect")}</Text>
+          </View>
 
-      <Text style={styles.registerText}>{t("addFarmFreshProducts")}</Text>
+          <Text style={styles.registerText}>{t("addFarmFreshProducts")}</Text>
 
-      {/* Product Name Field */}
-      <Text style={styles.label}>{t("productName")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("productName")}
-        value={formData.name}
-        onChangeText={(text) => handleChange("name", text)}
-        placeholderTextColor="#555"
-      />
-
-      {/* Price Field */}
-      <Text style={styles.label}>{t("price")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("price")}
-        value={formData.price}
-        onChangeText={(text) => handleChange("price", text)}
-        keyboardType="numeric"
-        placeholderTextColor="#555"
-      />
-
-      {/* Price Type Picker (Fixed or Offer) */}
-      <Text style={styles.label}>{t("priceType")}</Text>
-      <Picker
-        selectedValue={formData.priceType}
-        style={styles.picker}
-        onValueChange={(itemValue) => handleChange("priceType", itemValue)}
-      >
-        <Picker.Item label={t("selectPriceType")} value="" />
-        <Picker.Item label="Fixed" value="fixed" />
-        <Picker.Item label="Offer" value="offer" />
-      </Picker>
-
-      {/* Show discount input only if priceType is "Offer" */}
-      {formData.priceType === "offer" && (
-        <>
-          <Text style={styles.label}>{t("discount")}</Text>
+          {/* Product Name Field */}
+          <Text style={styles.label}>{t("productName")}</Text>
           <TextInput
             style={styles.input}
-            placeholder={t("discount")}
-            value={formData.discount}
-            onChangeText={(text) => handleChange("discount", text)}
+            placeholder={t("productName")}
+            value={formData.name}
+            onChangeText={(text) => handleChange("name", text)}
+            placeholderTextColor="#555"
+          />
+
+          {/* Price Field */}
+          <Text style={styles.label}>{t("price")}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t("price")}
+            value={formData.price}
+            onChangeText={(text) => handleChange("price", text)}
             keyboardType="numeric"
             placeholderTextColor="#555"
           />
-        </>
-      )}
 
-      {/* Quantity Field */}
-      <Text style={styles.label}>{t("quantity")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("quantity")}
-        value={formData.availableQuantity}
-        onChangeText={(text) => handleChange("availableQuantity", text)}
-        keyboardType="numeric"
-        placeholderTextColor="#555"
-      />
+          {/* Price Type Picker (Fixed or Offer) */}
+          <Text style={styles.label}>{t("priceType")}</Text>
+          <Picker
+            selectedValue={formData.priceType}
+            style={styles.picker}
+            onValueChange={(itemValue) => handleChange("priceType", itemValue)}
+          >
+            <Picker.Item label={t("selectPriceType")} value="" />
+            <Picker.Item label="Fixed" value="fixed" />
+            <Picker.Item label="Offer" value="offer" />
+          </Picker>
 
-      {/* Image URL Field */}
-      <Text style={styles.label}>{t("imageUrl")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("imageUrl")}
-        value={formData.img}
-        onChangeText={(text) => handleChange("img", text)}
-        placeholderTextColor="#555"
-      />
-
-      {/* Category Picker */}
-      <Text style={styles.label}>{t("category")}</Text>
-      <Picker
-        selectedValue={formData.categoryId}
-        style={styles.picker}
-        onValueChange={(itemValue) => handleChange("categoryId", itemValue)}
-      >
-        {category.length > 0 ? (
-          <>
-            <Picker.Item label={t("selectCategory")} value="" />
-            {category.map((categoryItem) => (
-              <Picker.Item
-                key={categoryItem.id}
-                label={categoryItem.name}
-                value={categoryItem.id}
+          {/* Show discount input only if priceType is "Offer" */}
+          {formData.priceType === "offer" && (
+            <>
+              <Text style={styles.label}>{t("discount")}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t("discount")}
+                value={formData.discount}
+                onChangeText={(text) => handleChange("discount", text)}
+                keyboardType="numeric"
+                placeholderTextColor="#555"
               />
-            ))}
-          </>
-        ) : (
-          <Picker.Item label={t("loadingCategories")} value="" />
-        )}
-      </Picker>
+            </>
+          )}
 
-      {/* Description Field */}
-      <Text style={styles.label}>{t("description")}</Text>
-      <TextInput
-        style={styles.description}
-        placeholder={t("description")}
-        value={formData.description}
-        onChangeText={(text) => handleChange("description", text)}
-        placeholderTextColor="#555"
-        multiline
-      />
+          {/* Quantity Field */}
+          <Text style={styles.label}>{t("quantity")}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t("quantity")}
+            value={formData.availableQuantity}
+            onChangeText={(text) => handleChange("availableQuantity", text)}
+            keyboardType="numeric"
+            placeholderTextColor="#555"
+          />
 
-      {/* Submit Button */}
-      <TouchableOpacity style={styles.signUpButton} onPress={handleSubmit}>
-        <Text style={styles.signUpText}>{t("addProduct")}</Text>
-      </TouchableOpacity>
-    </ScrollView>
+          {/* Image URL Field */}
+          <Text style={styles.label}>{t("imageUrl")}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t("imageUrl")}
+            value={formData.img}
+            onChangeText={(text) => handleChange("img", text)}
+            placeholderTextColor="#555"
+          />
+
+          {/* Category Picker */}
+          <Text style={styles.label}>{t("category")}</Text>
+          <Picker
+            selectedValue={formData.categoryId}
+            style={styles.picker}
+            onValueChange={(itemValue) => handleChange("categoryId", itemValue)}
+          >
+            <Picker.Item label="select category" value={""} />
+            {category.map((categoryData) => {
+              return (
+                <Picker.Item
+                  label={categoryData.name}
+                  value={categoryData.id}
+                />
+              );
+            })}
+          </Picker>
+
+          {/* Description Field */}
+          <Text style={styles.label}>{t("description")}</Text>
+          <TextInput
+            style={styles.description}
+            placeholder={t("description")}
+            value={formData.description}
+            onChangeText={(text) => handleChange("description", text)}
+            placeholderTextColor="#555"
+            multiline
+          />
+
+          {/* Submit Button */}
+          <TouchableOpacity style={styles.signUpButton} onPress={handleSubmit}>
+            <Text style={styles.signUpText}>{t("addProduct")}</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      )}
+    </>
   );
 }
 

@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function SettingsScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t('settings')}</Text>
+        <Text style={styles.headerTitle}>{t("settings")}</Text>
       </View>
 
       {/* Profile Section */}
@@ -32,25 +32,34 @@ export default function SettingsScreen() {
 
       {/* Account Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('account')}</Text>
-        <TouchableOpacity style={styles.option} onPress={() => router.push('/editProfile')}>
+        <Text style={styles.sectionTitle}>{t("account")}</Text>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => router.push("/editProfile")}
+        >
           <FontAwesome5 name="user-edit" size={18} color="green" />
-          <Text style={styles.optionText}>{t('editProfile')}</Text>
+          <Text style={styles.optionText}>{t("editProfile")}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option} onPress={() => router.push('/mailpassword')}>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => router.push("/mailpassword")}
+        >
           <Ionicons name="lock-closed-outline" size={20} color="green" />
-          <Text style={styles.optionText}>{t('changePassword')}</Text>
+          <Text style={styles.optionText}>{t("changePassword")}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
       </View>
 
       {/* Preferences Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('preferences')}</Text>
-        <TouchableOpacity style={styles.option} onPress={() => router.push('/language')}>
+        <Text style={styles.sectionTitle}>{t("preferences")}</Text>
+        <TouchableOpacity
+          style={styles.option}
+          onPress={() => router.push("/language")}
+        >
           <FontAwesome5 name="language" size={18} color="green" />
-          <Text style={styles.optionText}>{t('languages')}</Text>
+          <Text style={styles.optionText}>{t("languages")}</Text>
           <Ionicons name="chevron-forward" size={20} color="green" />
         </TouchableOpacity>
       </View>
@@ -61,25 +70,25 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'green',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "green",
     paddingVertical: 15,
     paddingHorizontal: 20,
     height: 100,
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
     marginLeft: 20,
   },
   profileSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 20,
     paddingHorizontal: 20,
   },
@@ -87,27 +96,27 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
   },
   editIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 30,
-    left: '60%',
+    left: "60%",
     width: 25,
     height: 25,
     borderRadius: 9,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   username: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 15,
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     marginHorizontal: 20,
     borderRadius: 10,
     marginBottom: 20,
@@ -115,20 +124,20 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    backgroundColor: '#eee',
+    fontWeight: "bold",
+    backgroundColor: "#eee",
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 5,
     marginBottom: 10,
   },
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   optionText: {
     flex: 1,

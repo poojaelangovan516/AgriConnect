@@ -35,6 +35,7 @@ export default function HomePage() {
   const getOrderData = async () => {
     try {
       const tempuserId = await AsyncStorage.getItem("user");
+
       if (tempuserId) {
         const response = await axios.get(
           `${baseUrl}user/order?id=${tempuserId}`
@@ -201,7 +202,7 @@ export default function HomePage() {
       {/* Floating Add Button */}
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => router.push("./addProduct")}
+        onPress={() => router.push({ pathname: "./addProduct" })}
       >
         <Ionicons name="add" size={40} color="white" />
       </TouchableOpacity>

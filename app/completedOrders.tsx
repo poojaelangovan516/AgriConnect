@@ -88,7 +88,7 @@ export default function CompletedOrdersScreen() {
           }
           style={styles.trackButton}
         >
-          <Text style={styles.trackButtonText}>Track</Text>
+          <Text style={styles.trackButtonText}>View</Text>
         </TouchableOpacity>
       </View>
     </View>
